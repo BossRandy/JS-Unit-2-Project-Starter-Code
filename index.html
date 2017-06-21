@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html class="no-js" lang="">
 
     <head>
@@ -21,14 +21,11 @@
         <header>
           <section class="container">
             <a href="#"><h1>Feedr</h1></a>
+
             <nav>
-              <ul>
+              <ul id="ulSourceListA">
                 <li><a href="#">News Source: <span>Source Name</span></a>
-                  <ul>
-                      <li><a href="#">Source 1</a></li>
-                      <li><a href="#">Source 2</a></li>
-                      <li><a href="#">Source 3</a></li>
-                  </ul>
+                  <ul id="ulSourceListB"></ul>
                 </li>
               </ul>
 
@@ -47,14 +44,13 @@
           <a href="#" class="closePopUp">X</a>
           <div class="container">
             <h1>Article title here</h1>
-            <p>
-              Article description/content here.
-            </p>
+            <p>Article description/content here.</p>
             <a href="#" class="popUpAction" target="_blank">Read more from source</a>
           </div>
         </div>
 
-        <section id="main" class="container"></section>
+        <section id="main" class="container">
+        </section>
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.3.min.js"><\/script>')</script>

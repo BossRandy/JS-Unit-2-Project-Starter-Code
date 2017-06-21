@@ -21,34 +21,93 @@
 </article>
 */
 
-var sources = [];
-var articles = {
-	image: 'images/article_placeholder_2.jpg',
-	title: 'Test article title',
-	impression: 0
+const urlBypass = 'https://accesscontrolalloworiginall.herokuapp.com/';
+var urlBypassToggle = false;
+
+var sourceList = [];
+var sourceListObj = [];
+
+function source() {
+    return {
+        url: '',
+        urlbypass: false,
+        callback: ''
+    };
 }
+
+
+var article = {
+    thumbnail: 'images/article_placeholder_2.jpg',
+    title: 'Test article title',
+    impression: 0,
+    url: ''
+};
 
 function Feed_Init() {
 
-	sources.push('http://digg.com/api/news/popular.json');
+    sourceList.push('http://digg.com/api/news/popular.json');
 
+    var temp = source();
+    temp.url = 'http://digg.com/api/news/popular.json';
+    temp.callback = 'parse_digg';
+    sourceListObj.push(temp);
+
+    //***Fill source list dropdown.
+    $('#ulSourceListB').empty();
+    sourceListObj.forEach(function (elm) {
+        var a = $('<a>', { href: elm.url });
+        var newA = $('<a>', { href: '#' }).text(a.prop('hostname'))
+        var newLi = $('<li>').append(newA);
+
+        $('#ulSourceListB').append(newLi);
+    });
+
+    get_Articles();
 }
 
 function get_Articles() {
 
-		for (let i = 0; i < sources.length; i++) {
-			$.when($.get(sources[i])).then(function(data) {
+    sourceListObj.forEach(function (elm) {
 
-		        //***Random word from API put in index 0.
-		        selectedWord = 0;
-		        words[selectedWord] = data.word;
-		        
-		        getNewWordTomb();
+        var fullurl = elm.url;
+        if (elm.urlbypass === true)
+            fullurl = urlBypass + elm.url;
 
-		    }, getNewWordTomb);
-		}
+        $.when($.get(fullurl)).then(function (resp) {
+            console.log(resp);
+
+            resp.data.feed.forEach(function (elm) {
+                console.log('TITLE: ' + elm.content.title);
+                console.log('THUMB: ' + elm.content.media.images[0].original_url);
+                console.log('URL: ' + elm.content.original_url);
+                console.log('SCORE: ' + elm.digg_score);
+                console.log('');
+            });
+
+        }).fail(function (err) {
+            debugger;
+            error_msg(err, elm);
+        });
+
+        elm.urlbypass = false;
+    });
+
 }
 
+function error_msg(err, val) {
+    alert('ERROR: ' + err);
+
+    
+
+    if (err.toLowerCase().indexOf('Access-Control-Allow-Origin') >= 0) {
+        urlBypassToggle = true;
+        val.urlbypass = true;
+        get_Articles();
+    }
+}
+
+
+Feed_Init();
 
 
 
