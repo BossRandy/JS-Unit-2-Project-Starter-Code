@@ -5,9 +5,10 @@
 */
 const urlBypass = 'https://accesscontrolalloworiginall.herokuapp.com/';
 
-var sourceListObj = [];
-var articleListObj = [];
+var sourceListObj = []; //***Hold source objects.
+var articleListObj = []; //***Hold articles objects
 
+//***Object for sources.
 function source() {
     return {
         url: '',
@@ -18,6 +19,7 @@ function source() {
     };
 }
 
+//***Object for articles.
 function article() {
     return {
         thumbnail: 'images/article_placeholder_2.jpg',
